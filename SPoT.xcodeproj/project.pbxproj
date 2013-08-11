@@ -17,7 +17,16 @@
 		8BA48DB617B61F87007E1A68 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA48DB517B61F87007E1A68 /* Default@2x.png */; };
 		8BA48DB817B61F87007E1A68 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA48DB717B61F87007E1A68 /* Default-568h@2x.png */; };
 		8BA48DBB17B61F87007E1A68 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BA48DB917B61F87007E1A68 /* MainStoryboard.storyboard */; };
-		8BA48DBE17B61F87007E1A68 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA48DBD17B61F87007E1A68 /* ViewController.m */; };
+		8BA48DD017B6236C007E1A68 /* FlickrFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA48DC717B6236C007E1A68 /* FlickrFetcher.m */; };
+		8BA48DD117B6236C007E1A68 /* FlickrPhotoTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA48DC917B6236C007E1A68 /* FlickrPhotoTVC.m */; };
+		8BA48DD217B6236C007E1A68 /* HawaiiImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA48DCB17B6236C007E1A68 /* HawaiiImageViewController.m */; };
+		8BA48DD317B6236C007E1A68 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA48DCD17B6236C007E1A68 /* ImageViewController.m */; };
+		8BA48DD417B6236C007E1A68 /* LatestFlickrPhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA48DCF17B6236C007E1A68 /* LatestFlickrPhotosTVC.m */; };
+		8BA48DD717B7B3EF007E1A68 /* FlickrTagsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA48DD617B7B3EF007E1A68 /* FlickrTagsTVC.m */; };
+		8BA48DDC17B84823007E1A68 /* photos_polaroid.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA48DD817B84823007E1A68 /* photos_polaroid.png */; };
+		8BA48DDD17B84823007E1A68 /* photos_polaroid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA48DD917B84823007E1A68 /* photos_polaroid@2x.png */; };
+		8BA48DDE17B84823007E1A68 /* clock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA48DDA17B84823007E1A68 /* clock@2x.png */; };
+		8BA48DDF17B84823007E1A68 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA48DDB17B84823007E1A68 /* clock.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,8 +44,23 @@
 		8BA48DB517B61F87007E1A68 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		8BA48DB717B61F87007E1A68 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		8BA48DBA17B61F87007E1A68 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		8BA48DBC17B61F87007E1A68 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		8BA48DBD17B61F87007E1A68 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		8BA48DC517B6236C007E1A68 /* FlickrAPIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrAPIKey.h; sourceTree = "<group>"; };
+		8BA48DC617B6236C007E1A68 /* FlickrFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrFetcher.h; sourceTree = "<group>"; };
+		8BA48DC717B6236C007E1A68 /* FlickrFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrFetcher.m; sourceTree = "<group>"; };
+		8BA48DC817B6236C007E1A68 /* FlickrPhotoTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrPhotoTVC.h; sourceTree = "<group>"; };
+		8BA48DC917B6236C007E1A68 /* FlickrPhotoTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrPhotoTVC.m; sourceTree = "<group>"; };
+		8BA48DCA17B6236C007E1A68 /* HawaiiImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HawaiiImageViewController.h; sourceTree = "<group>"; };
+		8BA48DCB17B6236C007E1A68 /* HawaiiImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HawaiiImageViewController.m; sourceTree = "<group>"; };
+		8BA48DCC17B6236C007E1A68 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		8BA48DCD17B6236C007E1A68 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
+		8BA48DCE17B6236C007E1A68 /* LatestFlickrPhotosTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LatestFlickrPhotosTVC.h; sourceTree = "<group>"; };
+		8BA48DCF17B6236C007E1A68 /* LatestFlickrPhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LatestFlickrPhotosTVC.m; sourceTree = "<group>"; };
+		8BA48DD517B7B3EF007E1A68 /* FlickrTagsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrTagsTVC.h; sourceTree = "<group>"; };
+		8BA48DD617B7B3EF007E1A68 /* FlickrTagsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrTagsTVC.m; sourceTree = "<group>"; };
+		8BA48DD817B84823007E1A68 /* photos_polaroid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photos_polaroid.png; sourceTree = "<group>"; };
+		8BA48DD917B84823007E1A68 /* photos_polaroid@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photos_polaroid@2x.png"; sourceTree = "<group>"; };
+		8BA48DDA17B84823007E1A68 /* clock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clock@2x.png"; sourceTree = "<group>"; };
+		8BA48DDB17B84823007E1A68 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,11 +107,18 @@
 		8BA48DA717B61F87007E1A68 /* SPoT */ = {
 			isa = PBXGroup;
 			children = (
-				8BA48DB017B61F87007E1A68 /* AppDelegate.h */,
-				8BA48DB117B61F87007E1A68 /* AppDelegate.m */,
 				8BA48DB917B61F87007E1A68 /* MainStoryboard.storyboard */,
-				8BA48DBC17B61F87007E1A68 /* ViewController.h */,
-				8BA48DBD17B61F87007E1A68 /* ViewController.m */,
+				8BA48DCC17B6236C007E1A68 /* ImageViewController.h */,
+				8BA48DCD17B6236C007E1A68 /* ImageViewController.m */,
+				8BA48DCA17B6236C007E1A68 /* HawaiiImageViewController.h */,
+				8BA48DCB17B6236C007E1A68 /* HawaiiImageViewController.m */,
+				8BA48DC817B6236C007E1A68 /* FlickrPhotoTVC.h */,
+				8BA48DC917B6236C007E1A68 /* FlickrPhotoTVC.m */,
+				8BA48DCE17B6236C007E1A68 /* LatestFlickrPhotosTVC.h */,
+				8BA48DCF17B6236C007E1A68 /* LatestFlickrPhotosTVC.m */,
+				8BA48DD517B7B3EF007E1A68 /* FlickrTagsTVC.h */,
+				8BA48DD617B7B3EF007E1A68 /* FlickrTagsTVC.m */,
+				8BA48DC417B6236C007E1A68 /* FlickrFetcher */,
 				8BA48DA817B61F87007E1A68 /* Supporting Files */,
 			);
 			path = SPoT;
@@ -96,6 +127,12 @@
 		8BA48DA817B61F87007E1A68 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8BA48DD817B84823007E1A68 /* photos_polaroid.png */,
+				8BA48DD917B84823007E1A68 /* photos_polaroid@2x.png */,
+				8BA48DDA17B84823007E1A68 /* clock@2x.png */,
+				8BA48DDB17B84823007E1A68 /* clock.png */,
+				8BA48DB017B61F87007E1A68 /* AppDelegate.h */,
+				8BA48DB117B61F87007E1A68 /* AppDelegate.m */,
 				8BA48DA917B61F87007E1A68 /* SPoT-Info.plist */,
 				8BA48DAA17B61F87007E1A68 /* InfoPlist.strings */,
 				8BA48DAD17B61F87007E1A68 /* main.m */,
@@ -105,6 +142,16 @@
 				8BA48DB717B61F87007E1A68 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8BA48DC417B6236C007E1A68 /* FlickrFetcher */ = {
+			isa = PBXGroup;
+			children = (
+				8BA48DC517B6236C007E1A68 /* FlickrAPIKey.h */,
+				8BA48DC617B6236C007E1A68 /* FlickrFetcher.h */,
+				8BA48DC717B6236C007E1A68 /* FlickrFetcher.m */,
+			);
+			path = FlickrFetcher;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,6 +210,10 @@
 				8BA48DB617B61F87007E1A68 /* Default@2x.png in Resources */,
 				8BA48DB817B61F87007E1A68 /* Default-568h@2x.png in Resources */,
 				8BA48DBB17B61F87007E1A68 /* MainStoryboard.storyboard in Resources */,
+				8BA48DDC17B84823007E1A68 /* photos_polaroid.png in Resources */,
+				8BA48DDD17B84823007E1A68 /* photos_polaroid@2x.png in Resources */,
+				8BA48DDE17B84823007E1A68 /* clock@2x.png in Resources */,
+				8BA48DDF17B84823007E1A68 /* clock.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,7 +226,12 @@
 			files = (
 				8BA48DAE17B61F87007E1A68 /* main.m in Sources */,
 				8BA48DB217B61F87007E1A68 /* AppDelegate.m in Sources */,
-				8BA48DBE17B61F87007E1A68 /* ViewController.m in Sources */,
+				8BA48DD017B6236C007E1A68 /* FlickrFetcher.m in Sources */,
+				8BA48DD117B6236C007E1A68 /* FlickrPhotoTVC.m in Sources */,
+				8BA48DD217B6236C007E1A68 /* HawaiiImageViewController.m in Sources */,
+				8BA48DD317B6236C007E1A68 /* ImageViewController.m in Sources */,
+				8BA48DD417B6236C007E1A68 /* LatestFlickrPhotosTVC.m in Sources */,
+				8BA48DD717B7B3EF007E1A68 /* FlickrTagsTVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,7 +319,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SPoT/SPoT-Prefix.pch";
 				INFOPLIST_FILE = "SPoT/SPoT-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -274,7 +332,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SPoT/SPoT-Prefix.pch";
 				INFOPLIST_FILE = "SPoT/SPoT-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
