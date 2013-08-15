@@ -8,6 +8,7 @@
 
 #import "FlickrPhotoTVC.h"
 #import "FlickrFetcher.h"
+#import "RecentPhotoManager.h"
 
 @implementation FlickrPhotoTVC
 
@@ -33,12 +34,14 @@
     if ([sender isKindOfClass:[UITableViewCell class]]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         if (indexPath) {
-            if ([segue.identifier isEqualToString:@"Show Image"]) {
-                if ([segue.destinationViewController respondsToSelector:@selector(setImageURL:)]) {
-                    NSURL *url = [FlickrFetcher urlForPhoto:self.photos[indexPath.row] format:FlickrPhotoFormatLarge];
-                    [segue.destinationViewController performSelector:@selector(setImageURL:) withObject:url];
-                    [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]];
-                }
+            if ([segue.destinationViewController respondsToSelector:@selector(setImageURL:)]) {
+                NSDictionary *flickrPhoto = self.photos[indexPath.row];
+                NSURL *url = [FlickrFetcher urlForPhoto:flickrPhoto format:FlickrPhotoFormatLarge];
+                [segue.destinationViewController performSelector:@selector(setImageURL:) withObject:url];
+                [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]];
+                
+                // store the photo in recent photos list
+                [RecentPhotoManager addRecentPhoto:flickrPhoto];
             }
         }
     }
@@ -60,6 +63,14 @@
 - (NSString *)titleForRow:(NSUInteger)row
 {
     return [self.photos[row][FLICKR_PHOTO_TITLE] description]; // description because could be NSNull
+}
+
+// a helper method that looks in the Model for the photo dictionary at the given row
+//  and gets the title out of it
+
+- (NSString *)subtitleForRow:(NSUInteger)row
+{
+    return [self descriptionForRow:row];
 }
 
 // a helper method that looks in the Model for the photo dictionary at the given row
@@ -87,7 +98,7 @@
     
     // Configure the cell...
     cell.textLabel.text = [self titleForRow:indexPath.row];
-    cell.detailTextLabel.text = [self descriptionForRow:indexPath.row];
+    cell.detailTextLabel.text = [self subtitleForRow:indexPath.row];
     
     return cell;
 }

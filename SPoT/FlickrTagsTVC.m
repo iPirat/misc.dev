@@ -11,7 +11,10 @@
 
 @interface FlickrTagsTVC ()
 @property (strong, nonatomic) NSMutableDictionary *tags;
+@property (strong, nonatomic, readonly) NSArray *sortedTags;
 @end
+
+#define FORBIDDEN_TAGS [NSArray arrayWithObjects:@"portrait", @"landscape", @"cs193pspot", nil]
 
 @implementation FlickrTagsTVC
 
@@ -28,14 +31,21 @@
         NSArray *tags = [flickrTags componentsSeparatedByString:@" "];
         for (NSString *tag in tags) {
             // skipping forbidden tags
-            if (![[NSArray arrayWithObjects:@"portrait", @"landscape", @"cs193pspot", nil] containsObject:tag]){
+            if (![FORBIDDEN_TAGS containsObject:tag]){
                 if (!self.tags[tag]) self.tags[tag] = [[NSMutableArray alloc] init];
-                [self.tags[tag] addObject:flickrPhoto];
+                
+                // add photo, keeping array sorted by title
+                NSUInteger newIndex = [self.tags[tag] indexOfObject:flickrPhoto
+                                                      inSortedRange:(NSRange){0, [self.tags[tag] count]}
+                                                            options:NSBinarySearchingInsertionIndex
+                                                    usingComparator:^NSComparisonResult(NSDictionary *p1, NSDictionary *p2) {
+                                                        return [p1[FLICKR_PHOTO_TITLE] compare:p2[FLICKR_PHOTO_TITLE]];
+                                                    }];
+                [self.tags[tag] insertObject:flickrPhoto atIndex:newIndex];
             }
         }
     }
 }
-
 
 
 #pragma mark - Property Business
@@ -43,6 +53,10 @@
 - (NSMutableDictionary *)tags {
     if (!_tags) _tags = [[NSMutableDictionary alloc] init];
     return _tags;
+}
+
+- (NSArray *)sortedTags {
+    return [[self.tags allKeys] sortedArrayUsingSelector:@selector(compare:)];
 }
 
 #pragma mark - Table view data source
@@ -62,10 +76,7 @@
     static NSString *CellIdentifier = @"Flickr Tag";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    NSArray *allTags = [self.tags allKeys];
-    [allTags sortedArrayUsingSelector:@selector(compare:)];
-    
-    NSString *tag = allTags[indexPath.row];
+    NSString *tag = self.sortedTags[indexPath.row];
 
     // Configure the cell...
     cell.textLabel.text = [self displayTag:tag];
@@ -91,9 +102,10 @@
             if ([segue.identifier isEqualToString:@"Show Image Table"]) {
                 if ([segue.destinationViewController respondsToSelector:@selector(setPhotos:)]) {
                     NSString *tag = [sender.textLabel.text lowercaseString];
+                    NSArray *photos = self.tags[tag];
                     [segue.destinationViewController setTitle:[self displayTag:tag]];
                     [segue.destinationViewController performSelector:@selector(setPhotos:)
-                                                          withObject:self.tags[tag]];
+                                                          withObject:photos];
                 }
             }
         }

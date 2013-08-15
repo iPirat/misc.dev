@@ -17,4 +17,8 @@
 // (e.g. FlickrFetcher will obtain such an array of dictionaries)
 @property (nonatomic, strong) NSArray *photos; // of NSDictionary
 
+- (NSString *)titleForRow:(NSUInteger)row;
+- (NSString *)subtitleForRow:(NSUInteger)row;
+
+
 @end
