@@ -20,9 +20,7 @@
 + (NSArray *)getAllRecentPhotos {
     NSDictionary *recentPhotos = [[NSUserDefaults standardUserDefaults] dictionaryForKey:USER_DEFAULTS_KEY_RECENT_PHOTOS];
     // sort by lastModDate before returning
-    NSArray *sortedPhotos = [[recentPhotos allValues] sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *p1, NSDictionary *p2) {
-        return [p2[FLICKR_LAST_ACCESS_DATE_BY_SPOT] compare:p1[FLICKR_LAST_ACCESS_DATE_BY_SPOT]];
-    }];
+    NSArray *sortedPhotos = [[recentPhotos allValues] sortedArrayUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:FLICKR_LAST_ACCESS_DATE_BY_SPOT ascending:NO]]];
     return sortedPhotos;
 }
 
