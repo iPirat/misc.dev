@@ -11,6 +11,7 @@
 @interface ImageViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
+@property (nonatomic) BOOL doAutoZoom;
 @end
 
 @implementation ImageViewController
@@ -42,6 +43,8 @@
             self.imageView.image = image;
             self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
         }
+        
+        self.doAutoZoom = YES;
     }
 }
 
@@ -75,6 +78,19 @@
     self.scrollView.maximumZoomScale = 5.0;
     self.scrollView.delegate = self;
     [self resetImage];
+}
+
+- (void)viewDidLayoutSubviews {
+    if (self.doAutoZoom){
+        CGFloat xScale = self.scrollView.bounds.size.width  / self.imageView.image.size.width;
+        CGFloat yScale = self.scrollView.bounds.size.height / self.imageView.image.size.height;
+        
+        self.scrollView.zoomScale = fmaxf(xScale, yScale);
+    }
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale {
+    self.doAutoZoom = NO;
 }
 
 @end
