@@ -10,7 +10,11 @@
 #import "FlickrFetcher.h"
 #import "RecentPhotoManager.h"
 
-@implementation FlickrPhotoTVC
+@interface FlickrPhotoTVC() <UISplitViewControllerDelegate>
+@end
+
+
+@implementation FlickrPhotoTVC 
 
 // sets the Model
 // reloads the UITableView (since Model is changing)
@@ -36,7 +40,8 @@
         if (indexPath) {
             if ([segue.destinationViewController respondsToSelector:@selector(setImageURL:)]) {
                 NSDictionary *flickrPhoto = self.photos[indexPath.row];
-                NSURL *url = [FlickrFetcher urlForPhoto:flickrPhoto format:FlickrPhotoFormatLarge];
+                int photoFormat = [segue isKindOfClass:[UIStoryboardPopoverSegue class]]?FlickrPhotoFormatOriginal:FlickrPhotoFormatLarge;
+                NSURL *url = [FlickrFetcher urlForPhoto:flickrPhoto format:photoFormat];
                 [segue.destinationViewController performSelector:@selector(setImageURL:) withObject:url];
                 [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]];
                 
@@ -101,6 +106,20 @@
     cell.detailTextLabel.text = [self subtitleForRow:indexPath.row];
     
     return cell;
+}
+
+
+#pragma mark - UISplitControllerDelegate
+
+- (void)awakeFromNib
+{
+    self.splitViewController.delegate = self;
+}
+
+-(BOOL)splitViewController:(UISplitViewController *)svc
+  shouldHideViewController:(UIViewController *)vc
+             inOrientation:(UIInterfaceOrientation)orientation {
+    return NO;
 }
 
 @end

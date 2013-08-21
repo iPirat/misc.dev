@@ -10,7 +10,7 @@
 #import "FlickrFetcher.h"
 
 @interface FlickrTagsTVC ()
-@property (strong, nonatomic) NSMutableDictionary *tags;
+@property (strong, nonatomic) NSDictionary *tags;
 @property (strong, nonatomic, readonly) NSArray *sortedTags;
 @end
 
@@ -22,36 +22,60 @@
 {
     [super viewDidLoad];
     [self setTitle:@"All Tags"];
-    [self addFlickrPhotos:[FlickrFetcher stanfordPhotos]];
+    [self.refreshControl addTarget:self
+                            action:@selector(loadPhotosFromFlickr)
+                  forControlEvents:UIControlEventValueChanged];
+    [self loadPhotosFromFlickr];
 }
 
-- (void)addFlickrPhotos:(NSArray *)flickrPhotos {
+- (void)loadPhotosFromFlickr {
+    [self.refreshControl beginRefreshing];
+    
+    dispatch_queue_t getStanfordPhotosQ = dispatch_queue_create("getStanfordPhotosQ", NULL);
+    dispatch_async(getStanfordPhotosQ, ^{
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        NSArray *flickrPhotos = [FlickrFetcher stanfordPhotos];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSMutableDictionary *preparedSelfTags = [self addFlickrPhotos:flickrPhotos];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.tags = preparedSelfTags;
+            [self.tableView reloadData];
+            [self.refreshControl endRefreshing];
+        });
+    });
+    
+
+}
+
+- (NSMutableDictionary *)addFlickrPhotos:(NSArray *)flickrPhotos {
+    NSMutableDictionary *preparedSelfTags = [[NSMutableDictionary alloc] init];
     for (NSDictionary *flickrPhoto in flickrPhotos) {
         NSString *flickrTags = [self getFlickrTagsFrom:flickrPhoto];
         NSArray *tags = [flickrTags componentsSeparatedByString:@" "];
         for (NSString *tag in tags) {
             // skipping forbidden tags
             if (![FORBIDDEN_TAGS containsObject:tag]){
-                if (!self.tags[tag]) self.tags[tag] = [[NSMutableArray alloc] init];
+                if (!preparedSelfTags[tag]) preparedSelfTags[tag] = [[NSMutableArray alloc] init];
                 
                 // add photo, keeping array sorted by title
-                NSUInteger newIndex = [self.tags[tag] indexOfObject:flickrPhoto
-                                                      inSortedRange:(NSRange){0, [self.tags[tag] count]}
+                NSUInteger newIndex = [preparedSelfTags[tag] indexOfObject:flickrPhoto
+                                                      inSortedRange:(NSRange){0, [preparedSelfTags[tag] count]}
                                                             options:NSBinarySearchingInsertionIndex
                                                     usingComparator:^NSComparisonResult(NSDictionary *p1, NSDictionary *p2) {
                                                         return [p1[FLICKR_PHOTO_TITLE] compare:p2[FLICKR_PHOTO_TITLE]];
                                                     }];
-                [self.tags[tag] insertObject:flickrPhoto atIndex:newIndex];
+                [preparedSelfTags[tag] insertObject:flickrPhoto atIndex:newIndex];
             }
         }
     }
+    return preparedSelfTags;
 }
 
 
 #pragma mark - Property Business
 
-- (NSMutableDictionary *)tags {
-    if (!_tags) _tags = [[NSMutableDictionary alloc] init];
+- (NSDictionary *)tags {
+    if (!_tags) _tags = [[NSDictionary alloc] init];
     return _tags;
 }
 

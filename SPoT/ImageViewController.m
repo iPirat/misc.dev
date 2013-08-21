@@ -7,11 +7,15 @@
 //
 
 #import "ImageViewController.h"
+#import "DisplayUrlVC.h"
 
 @interface ImageViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (nonatomic) BOOL doAutoZoom;
+@property (nonatomic, strong) UIPopoverController *urlPopoverController;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *titleBarItem;
 @end
 
 @implementation ImageViewController
@@ -22,6 +26,11 @@
 {
     _imageURL = imageURL;
     [self resetImage];
+}
+
+-(void)setTitle:(NSString *)title {
+    [super setTitle:title];
+    [self.titleBarItem setTitle:title];
 }
 
 // fetches the data from the URL
@@ -35,16 +44,32 @@
         self.scrollView.contentSize = CGSizeZero;
         self.imageView.image = nil;
         
-        NSData *imageData = [[NSData alloc] initWithContentsOfURL:self.imageURL];
-        UIImage *image = [[UIImage alloc] initWithData:imageData];
-        if (image) {
-            self.scrollView.zoomScale = 1.0;
-            self.scrollView.contentSize = image.size;
-            self.imageView.image = image;
-            self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-        }
+        NSURL *imageURL = self.imageURL; // to be kept in the block
         
-        self.doAutoZoom = YES;
+        NSLog(@"resetImage: self=%@ imageURL=%@", self, imageURL, nil);
+
+        [self.spinner startAnimating];
+        
+        dispatch_queue_t imageLoaderQ = dispatch_queue_create("imageLoaderQ", NULL);
+        dispatch_async(imageLoaderQ, ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+            NSData *imageData = [[NSData alloc] initWithContentsOfURL:imageURL];
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            UIImage *image = [[UIImage alloc] initWithData:imageData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (image ) {
+                    self.scrollView.zoomScale = 1.0;
+                    self.scrollView.contentSize = image.size;
+                    self.imageView.image = image;
+                    self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+                    self.doAutoZoom = YES;
+                    [self autocomputeZoomFactor];
+                }
+                [self.spinner stopAnimating];
+            });
+        });
+        
+        
     }
 }
 
@@ -81,6 +106,11 @@
 }
 
 - (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self autocomputeZoomFactor];
+}
+
+- (void)autocomputeZoomFactor {
     if (self.doAutoZoom){
         CGFloat xScale = self.scrollView.bounds.size.width  / self.imageView.image.size.width;
         CGFloat yScale = self.scrollView.bounds.size.height / self.imageView.image.size.height;
@@ -92,5 +122,23 @@
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale {
     self.doAutoZoom = NO;
 }
+
+-(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    if ([@"show url" isEqualToString: identifier]){
+        return self.imageURL != nil && !self.urlPopoverController.isPopoverVisible;
+    } 
+    return [super shouldPerformSegueWithIdentifier:identifier sender:sender];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.destinationViewController isKindOfClass:[DisplayUrlVC class]]) {
+        DisplayUrlVC *displayUrlVC = segue.destinationViewController;
+        displayUrlVC.url = self.imageURL;
+        if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
+            self.urlPopoverController = ((UIStoryboardPopoverSegue*)segue).popoverController;
+        }
+    }
+}
+
 
 @end
