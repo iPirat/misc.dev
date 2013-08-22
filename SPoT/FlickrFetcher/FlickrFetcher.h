@@ -40,4 +40,8 @@ typedef enum {
 // fetch a bunch of recently taken georeferenced Flickr photo dictionaries
 + (NSArray *)latestGeoreferencedPhotos;
 
+// enable/disable network activity indicator
++ (void)enableNetworkActivity;
++ (void)disableNetworkActivity;
+
 @end

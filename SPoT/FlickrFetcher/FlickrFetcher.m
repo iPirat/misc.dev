@@ -11,7 +11,30 @@
 
 #define FLICKR_PLACE_ID @"place_id"
 
+@interface FlickrFetcher ()
+@end
+
 @implementation FlickrFetcher
+
+#pragma mark - Network Indicator business
+
+static NSUInteger networkActivityCounter = 0;
+
++ (void)enableNetworkActivity {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    networkActivityCounter++;
+}
+
++ (void)disableNetworkActivity {
+    networkActivityCounter--;
+    if (networkActivityCounter==0)
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+
+
+
+#pragma mark - Original File below
 
 + (NSDictionary *)executeFlickrFetch:(NSString *)query
 {

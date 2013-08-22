@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DisplayUrlVC : UIViewController
+@interface DisplayAttributedStringVC : UIViewController
 
-@property (nonatomic, strong) NSURL *url;
+@property (nonatomic, strong) NSAttributedString *attrString;
 
 @end

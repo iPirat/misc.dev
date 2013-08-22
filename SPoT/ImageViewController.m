@@ -7,7 +7,8 @@
 //
 
 #import "ImageViewController.h"
-#import "DisplayUrlVC.h"
+#import "DisplayAttributedStringVC.h"
+#import "CacheImageFetcher.h"
 
 @interface ImageViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -43,29 +44,26 @@
     if (self.scrollView) {
         self.scrollView.contentSize = CGSizeZero;
         self.imageView.image = nil;
-        
-        NSURL *imageURL = self.imageURL; // to be kept in the block
-        
-        NSLog(@"resetImage: self=%@ imageURL=%@", self, imageURL, nil);
 
         [self.spinner startAnimating];
         
+        // using weak pointer to self in block (which is nil, if the old self doesnt exist anymore...
+        __weak ImageViewController *weakself = self;
+        
         dispatch_queue_t imageLoaderQ = dispatch_queue_create("imageLoaderQ", NULL);
         dispatch_async(imageLoaderQ, ^{
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-            NSData *imageData = [[NSData alloc] initWithContentsOfURL:imageURL];
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            NSData *imageData = [CacheImageFetcher getImageFromURL:self.imageURL];
             UIImage *image = [[UIImage alloc] initWithData:imageData];
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (image ) {
-                    self.scrollView.zoomScale = 1.0;
-                    self.scrollView.contentSize = image.size;
-                    self.imageView.image = image;
-                    self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-                    self.doAutoZoom = YES;
-                    [self autocomputeZoomFactor];
+                if (image) {
+                    weakself.scrollView.zoomScale = 1.0;
+                    weakself.scrollView.contentSize = image.size;
+                    weakself.imageView.image = image;
+                    weakself.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+                    weakself.doAutoZoom = YES;
+                    [weakself autocomputeZoomFactor];
                 }
-                [self.spinner stopAnimating];
+                [weakself.spinner stopAnimating];
             });
         });
         
@@ -131,9 +129,9 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.destinationViewController isKindOfClass:[DisplayUrlVC class]]) {
-        DisplayUrlVC *displayUrlVC = segue.destinationViewController;
-        displayUrlVC.url = self.imageURL;
+    if ([segue.destinationViewController isKindOfClass:[DisplayAttributedStringVC class]]) {
+        DisplayAttributedStringVC *displayAttrStringVC = segue.destinationViewController;
+        displayAttrStringVC.attrString = [[NSAttributedString alloc] initWithString:[self.imageURL description]];
         if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
             self.urlPopoverController = ((UIStoryboardPopoverSegue*)segue).popoverController;
         }

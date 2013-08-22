@@ -29,17 +29,18 @@
 }
 
 - (void)loadPhotosFromFlickr {
+    // begin refreshing must be in main thread
     [self.refreshControl beginRefreshing];
     
     dispatch_queue_t getStanfordPhotosQ = dispatch_queue_create("getStanfordPhotosQ", NULL);
     dispatch_async(getStanfordPhotosQ, ^{
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        [FlickrFetcher enableNetworkActivity];
         NSArray *flickrPhotos = [FlickrFetcher stanfordPhotos];
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [FlickrFetcher disableNetworkActivity];
         NSMutableDictionary *preparedSelfTags = [self addFlickrPhotos:flickrPhotos];
         dispatch_async(dispatch_get_main_queue(), ^{
+            // setting tags will reload table view, so must be in main thread
             self.tags = preparedSelfTags;
-            [self.tableView reloadData];
             [self.refreshControl endRefreshing];
         });
     });
@@ -74,9 +75,16 @@
 
 #pragma mark - Property Business
 
+@synthesize tags = _tags;
+
 - (NSDictionary *)tags {
     if (!_tags) _tags = [[NSDictionary alloc] init];
     return _tags;
+}
+
+-(void)setTags:(NSDictionary *)tags {
+    _tags = tags;
+    [self.tableView reloadData];
 }
 
 - (NSArray *)sortedTags {
